@@ -36,9 +36,10 @@ public class MetricsValve extends ValveBase implements AccessLog {
 	private static final Log logger = LogFactory.getLog(MetricsValve.class);
 	private static final MetricRegistry registry = new MetricRegistry();
 	private static final Map<String, Timer> uris = new ConcurrentHashMap<>();
+
 	private final Setup setup = new Setup();
 
-	protected boolean requestAttributesEnabled = false;
+	private boolean requestAttributesEnabled = false;
 	private ConsoleReporter console;
 	private InfluxdbReporter influx;
 	private GraphiteReporter graphite;

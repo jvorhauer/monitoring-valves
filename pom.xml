@@ -16,6 +16,7 @@
 
 	<scm>
 		<connection>scm:git:git@github.com:jvorhauer/metrics-valve.git</connection>
+		<developerConnection>scm:git:git@github.com:jvorhauer/metrics-valve.git</developerConnection>
 		<url>https://github.com/jvorhauer/metrics-valve</url>
 	</scm>
 
