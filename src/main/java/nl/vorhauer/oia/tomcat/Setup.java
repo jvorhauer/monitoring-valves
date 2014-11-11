@@ -1,11 +1,11 @@
-package nl.ing.oia.tomcat;
+package nl.vorhauer.oia.tomcat;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
 public class Setup {
 
-	private static final String PREFIX = "nl.ing.oia.metrics.";
+	private static final String PREFIX = "metrics.";
 	public static final Config config = ConfigFactory.load();
 
 	public Boolean isConsoleEnabled = getBool("console.enabled");
