@@ -1,3 +1,22 @@
+/*
+ * **********************************************************************************************************************
+ *
+ *  Copyright (c) 2014 Jurjen Vorhauer.
+ *
+ * **********************************************************************************************************************
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ *  the License. You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ *  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ *  specific language governing permissions and limitations under the License.
+ *
+ * **********************************************************************************************************************
+ */
+
 package nl.vorhauer.oia.tomcat;
 
 import com.codahale.metrics.ConsoleReporter;
@@ -46,17 +65,15 @@ public class MetricsValve extends ValveBase implements AccessLog {
 	public MetricsValve() throws Exception {
 		super(true);
 
-		setupJvmGauges();
+		registry.registerAll(new MemoryUsageGaugeSet());
+		registry.registerAll(new GarbageCollectorMetricSet());
+		registry.registerAll(new ThreadStatesGaugeSet());
+
 		setupReporters();
 
 		logger.info("enabled reporters started");
 	}
-		private void setupJvmGauges() {
-			registry.registerAll(new MemoryUsageGaugeSet());
-			registry.registerAll(new GarbageCollectorMetricSet());
-			registry.registerAll(new ThreadStatesGaugeSet());
-		}
-		private void setupReporters() throws Exception {
+		private synchronized void setupReporters() throws Exception {
 			if (setup.isConsoleEnabled) {
 				console = ConsoleReporter.forRegistry(registry).
 																	convertDurationsTo(TimeUnit.MILLISECONDS).
@@ -98,7 +115,7 @@ public class MetricsValve extends ValveBase implements AccessLog {
 
 	@Override
 	public void log(final Request request, final Response response, final long l) {
-		final String uri = cleanupUri(request.getDecodedRequestURI());
+		final String uri = rewriteUri(request.getDecodedRequestURI());
 		logger.info("log: " + uri + " took: " + l);
 		final Timer timer = timerForUri(uri);
 		final Timer.Context ctx = timer.time();
@@ -106,18 +123,20 @@ public class MetricsValve extends ValveBase implements AccessLog {
 		ctx.stop();
 	}
 		private Timer timerForUri(final String uri) {
-			assert uri != null;
 			if (!uris.containsKey(uri)) {
 				final Timer timer = registry.timer(uri);
 				uris.put(uri, timer);
 			}
 			return uris.get(uri);
 		}
-		private String cleanupUri(final String in) {
-			assert in != null;
-			final String dotted = in.replaceAll("/", "\\.");
-			return dotted.equals(".") ? "ROOT" : dotted.substring(1);
+
+	public final String rewriteUri(final String in) {
+		if (in == null) {
+			throw new IllegalArgumentException();
 		}
+		final String dotted = in.replaceAll("/", "\\.");
+		return dotted.equals(".") ? "ROOT" : dotted.substring(1);
+	}
 
 	@Override
 	public void setRequestAttributesEnabled(final boolean b) {
