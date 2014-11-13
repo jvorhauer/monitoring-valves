@@ -13,7 +13,6 @@ import metrics_influxdb.Influxdb;
 import metrics_influxdb.InfluxdbReporter;
 import org.apache.catalina.AccessLog;
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
@@ -47,12 +46,12 @@ public class MetricsValve extends ValveBase implements AccessLog {
 	public MetricsValve() throws Exception {
 		super(true);
 
-		setupGauges();
+		setupJvmGauges();
 		setupReporters();
 
-		logger.info("graphite influx started");
+		logger.info("enabled reporters started");
 	}
-		private void setupGauges() {
+		private void setupJvmGauges() {
 			registry.registerAll(new MemoryUsageGaugeSet());
 			registry.registerAll(new GarbageCollectorMetricSet());
 			registry.registerAll(new ThreadStatesGaugeSet());
@@ -65,6 +64,7 @@ public class MetricsValve extends ValveBase implements AccessLog {
 																	filter(MetricFilter.ALL).
 				                          build();
 				console.start(1, TimeUnit.MINUTES);
+				logger.info("setup: console reporter started.");
 			}
 			if (setup.isGraphiteEnabled) {
 				final InetSocketAddress isa = new InetSocketAddress(setup.graphiteHost, setup.graphitePort);
@@ -75,6 +75,7 @@ public class MetricsValve extends ValveBase implements AccessLog {
 				                            filter(MetricFilter.ALL).
 				                            build(new Graphite(isa));
 				graphite.start(1, TimeUnit.MINUTES);
+				logger.info("setup: graphite reporter started.");
 			}
 			if (setup.isInfluxdbEnabled) {
 				final Influxdb db = new Influxdb(setup.influxHost, setup.influxPort,
@@ -86,6 +87,7 @@ public class MetricsValve extends ValveBase implements AccessLog {
 				                          filter(MetricFilter.ALL).
 				                          build(db);
 				influx.start(1, TimeUnit.MINUTES);
+				logger.info("setup: influx reporter started.");
 			}
 		}
 
@@ -129,8 +131,7 @@ public class MetricsValve extends ValveBase implements AccessLog {
 
 	@Override
 	protected synchronized void stopInternal() throws LifecycleException {
-		logger.info("stopInternal");
-		setState(LifecycleState.STOPPING);
+		super.stopInternal();
 		if (setup.isInfluxdbEnabled && influx != null) {
 			influx.report();
 			influx.stop();
@@ -143,5 +144,6 @@ public class MetricsValve extends ValveBase implements AccessLog {
 			console.report();
 			console.stop();
 		}
+		logger.info("Stopped.");
 	}
 }

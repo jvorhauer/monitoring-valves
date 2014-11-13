@@ -20,7 +20,7 @@ public class SetupTest {
 		assertThat(setup, notNullValue());
 
 		assertThat(setup.getBool("console.enabled"), notNullValue());
-		assertThat(setup.getBool("NOT.EXISTY"), nullValue());
+		assertThat(setup.getBool("NOT.EXISTY"), is(false));
 
 		assertThat(setup.getInt("graphite.port"), notNullValue());
 		assertThat(setup.getInt("NOT.EXISTY"), nullValue());

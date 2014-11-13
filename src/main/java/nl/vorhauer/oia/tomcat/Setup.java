@@ -30,7 +30,7 @@ public class Setup {
 	}
 	public Boolean getBool(final String key) {
 		assert key != null;
-		return config.hasPath(PREFIX + key) ? config.getBoolean(PREFIX + key) : null;
+		return config.hasPath(PREFIX + key) && config.getBoolean(PREFIX + key);
 	}
 	public Integer getInt(final String key) {
 		assert key != null;
