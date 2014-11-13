@@ -26,10 +26,12 @@ Copy these JARs to the **lib** folder of a Tomcat instance:
 
 ## configuration
 
-The configuration of the metrics reporters is in the **reference.conf** file in **src/main/resources**.
+The configuration of the metrics reporters is in **src/main/resources/reference.conf**.
 
 If you want to override the default/reference configuration, copy the settings to a new file, say **my.conf** and
-add **-Dconfig.path=path/to/my.conf** to your setenv.sh.
+add **-Dconfig.file=path/to/my.conf** to your setenv.sh.
+
+Another option is to put **my.conf** in a folder which is part of the Tomcat classpath.
 
 ## Important!
 
