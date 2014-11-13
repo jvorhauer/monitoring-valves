@@ -12,12 +12,14 @@ Each request that arrives at the Tomcat instance with this Valve added to server
 <Valve className="nl.vorhauer.oia.tomcat.MetricsValve" />
 ```
 
-Add this line right after the AccessLogValve resource:
+Add this line near the AccessLogValve resource, at least in the **/Server/Service/Engine/Host** section:
 
 ```XML
-<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log." suffix=".txt"
-               pattern="%h %l %u %t &quot;%r&quot; %s %b %D" />
+<Valve className="org.apache.catalina.valves.AccessLogValve"
+       directory="logs"
+       prefix="localhost_access_log."
+       suffix=".txt"
+       pattern="%h %l %u %t &quot;%r&quot; %s %b %D" />
 ```
 
 ## dependencies
@@ -31,6 +33,10 @@ Copy these JARs to the **lib** folder of a Tomcat instance:
 - metrics-jvm-3.1.0.jar
 - config-1.2.1.jar
 - metrics-valve.jar
+
+### Notes on dependencies:
+
+metrics-valve uses [http://|Typseafe Config] as this is the most versatile configuration library available.
 
 ## configuration
 
