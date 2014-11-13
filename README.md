@@ -8,8 +8,16 @@ Each request that arrives at the Tomcat instance with this Valve added to server
 
 ## server.xml
 
-```
+```XML
 <Valve className="nl.vorhauer.oia.tomcat.MetricsValve" />
+```
+
+Add this line right after the AccessLogValve resource:
+
+```XML
+<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log." suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b %D" />
 ```
 
 ## dependencies
