@@ -129,14 +129,10 @@ public class MetricsValve extends ValveBase implements AccessLog {
 			}
 			return uris.get(uri);
 		}
-
-	public final String rewriteUri(final String in) {
-		if (in == null) {
-			throw new IllegalArgumentException();
+		private String rewriteUri(final String in) {
+			final String dotted = in.replaceAll("/", "\\.");
+			return dotted.equals(".") ? "ROOT" : dotted.substring(1);
 		}
-		final String dotted = in.replaceAll("/", "\\.");
-		return dotted.equals(".") ? "ROOT" : dotted.substring(1);
-	}
 
 	@Override
 	public void setRequestAttributesEnabled(final boolean b) {
