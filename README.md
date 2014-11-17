@@ -1,10 +1,8 @@
 # metrics-valve
 
-Tomcat 7 Valve to gather timing metrics on requests.
+Tomcat 7 Valve to gather timing metrics on requests and report the gathered timings to the console or graphite. Or both.
 
-NB: Mainly based on the AccessLogValve class.
-
-Each request that arrives at the Tomcat instance with this Valve added to server.xml is timed.
+*Each* request that arrives at the Tomcat instance with this Valve added to server.xml, is timed.
 
 ## server.xml
 
@@ -36,7 +34,7 @@ Copy these JARs to the **lib** folder of a Tomcat instance:
 
 ### Notes on dependencies:
 
-metrics-valve uses [http://|Typseafe Config] as this is the most versatile configuration library available.
+metrics-valve uses [Typseafe Config](https://github.com/typesafehub/config "Typesafe Config") as this is the most versatile configuration library available.
 
 ## configuration
 

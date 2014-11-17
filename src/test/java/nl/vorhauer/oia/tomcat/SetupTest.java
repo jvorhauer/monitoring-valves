@@ -54,28 +54,25 @@ public class SetupTest {
 	@Test
 	public void graphiteSetupTest() {
 		assertThat(setup, notNullValue());
-		assertThat(setup.graphiteHost, notNullValue());
-		assertThat(setup.graphiteHost.length(), greaterThan(0));
+
+		assertThat(setup.isGraphiteEnabled, notNullValue());
+		assertThat(setup.graphiteHost, not(isEmptyOrNullString()));
 		assertThat(setup.graphitePort, notNullValue());
 		assertThat(setup.graphitePort, greaterThan(1024));
-		assertThat(setup.graphitePrefix, notNullValue());
-		assertThat(setup.graphitePrefix.length(), greaterThan(0));
-		assertThat(setup.isGraphiteEnabled, notNullValue());
+		assertThat(setup.graphitePrefix, not(isEmptyOrNullString()));
 	}
 
 	@Test
 	public void influxSetupTest() {
 		assertThat(setup, notNullValue());
-		assertThat(setup.influxDb, notNullValue());
-		assertThat(setup.influxDb.length(), greaterThan(0));
-		assertThat(setup.influxHost, notNullValue());
-		assertThat(setup.influxHost.length(), greaterThan(0));
+
+		assertThat(setup.isInfluxdbEnabled, notNullValue());
+		assertThat(setup.influxDb, not(isEmptyOrNullString()));
+		assertThat(setup.influxHost, not(isEmptyOrNullString()));
 		assertThat(setup.influxPort, notNullValue());
 		assertThat(setup.influxPort, greaterThan(1024));
-		assertThat(setup.influxPassword, notNullValue());
-		assertThat(setup.influxUser, notNullValue());
-		assertThat(setup.influxUser.length(), greaterThan(0));
-		assertThat(setup.influxPrefix, notNullValue());
-		assertThat(setup.influxPrefix.length(), greaterThan(0));
+		assertThat(setup.influxPassword, not(isEmptyOrNullString()));
+		assertThat(setup.influxUser, not(isEmptyOrNullString()));
+		assertThat(setup.influxPrefix, not(isEmptyOrNullString()));
 	}
 }
