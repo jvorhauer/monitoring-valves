@@ -47,5 +47,5 @@ Another option is to put **my.conf** in a folder which is part of the Tomcat cla
 
 ## Important!
 
-This Valve has only been tested with Tomcat 7!
+This Valve has only been tested with Tomcat 7 and with JDK 1.6!
 
