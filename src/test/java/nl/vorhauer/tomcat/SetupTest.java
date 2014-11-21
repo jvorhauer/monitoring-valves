@@ -17,7 +17,7 @@
  * **********************************************************************************************************************
  */
 
-package nl.vorhauer.oia.tomcat;
+package nl.vorhauer.tomcat;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -43,6 +43,14 @@ public class SetupTest {
 
 		assertThat(setup.getInt("graphite.port"), notNullValue());
 		assertThat(setup.getInt("NOT.EXISTY"), nullValue());
+	}
+
+	@Test
+	public void jvmGaugesTest() {
+		assertThat(setup, notNullValue());
+		assertThat(setup.isJvmMemEnabled, notNullValue());
+		assertThat(setup.isJvmGcEnabled, notNullValue());
+		assertThat(setup.isJvmThreadStateEnabled, notNullValue());
 	}
 
 	@Test

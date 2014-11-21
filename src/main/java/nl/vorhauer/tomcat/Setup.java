@@ -17,7 +17,7 @@
  * **********************************************************************************************************************
  */
 
-package nl.vorhauer.oia.tomcat;
+package nl.vorhauer.tomcat;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -27,20 +27,24 @@ public class Setup {
 	private static final String PREFIX = "metrics.";
 	public static final Config config = ConfigFactory.load();
 
-	public Boolean isConsoleEnabled = getBool("console.enabled");
-	public Boolean isGraphiteEnabled= getBool("graphite.enabled");
-	public Boolean isInfluxdbEnabled= getBool("influx.enabled");
+	public final Boolean isConsoleEnabled = getBool("console.enabled");
+	public final Boolean isGraphiteEnabled= getBool("graphite.enabled");
+	public final Boolean isInfluxdbEnabled= getBool("influx.enabled");
 
-	public String graphiteHost   = getString("graphite.host");
-	public Integer graphitePort  = getInt("graphite.port");
-	public String graphitePrefix = getString("graphite.prefix");
+	public final Boolean isJvmMemEnabled = getBool("jvm.mem.enabled");
+	public final Boolean isJvmGcEnabled  = getBool("jvm.gc.enabled");
+	public final Boolean isJvmThreadStateEnabled = getBool("jvm.ts.enabled");
 
-	public String  influxHost     = getString("influx.host");
-	public Integer influxPort     = getInt("influx.port");
-	public String  influxPrefix   = getString("influx.prefix");
-	public String  influxDb       = getString("influx.db");
-	public String  influxUser     = getString("influx.username");
-	public String  influxPassword = getString("influx.password");
+	public final String graphiteHost   = getString("graphite.host");
+	public final Integer graphitePort  = getInt("graphite.port");
+	public final String graphitePrefix = getString("graphite.prefix");
+
+	public final String  influxHost     = getString("influx.host");
+	public final Integer influxPort     = getInt("influx.port");
+	public final String  influxPrefix   = getString("influx.prefix");
+	public final String  influxDb       = getString("influx.db");
+	public final String  influxUser     = getString("influx.username");
+	public final String  influxPassword = getString("influx.password");
 
 
 	public String  getString(final String key) {

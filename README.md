@@ -7,7 +7,7 @@ Tomcat 7 Valve to gather timing metrics on requests and report the gathered timi
 ## server.xml
 
 ```XML
-<Valve className="nl.vorhauer.oia.tomcat.MetricsValve" />
+<Valve className="nl.vorhauer.tomcat.MetricsValve" />
 ```
 
 Add this line near the AccessLogValve resource, at least in the **/Server/Service/Engine/Host** section:
@@ -47,5 +47,7 @@ Another option is to put **my.conf** in a folder which is part of the Tomcat cla
 
 ## Important!
 
-This Valve has only been tested with Tomcat 7 and with JDK 1.6!
+This Valve has only been tested with Tomcat 7!
+The Java version used to compile the sources is JDK 1.8.0_25, but the Maven compiler plugin was
+instructed to use 1.7 source and target versions.
 

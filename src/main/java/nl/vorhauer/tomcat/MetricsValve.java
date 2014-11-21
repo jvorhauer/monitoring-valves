@@ -17,7 +17,7 @@
  * **********************************************************************************************************************
  */
 
-package nl.vorhauer.oia.tomcat;
+package nl.vorhauer.tomcat;
 
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricFilter;

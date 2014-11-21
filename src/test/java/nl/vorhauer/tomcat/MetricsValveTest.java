@@ -17,7 +17,7 @@
  * **********************************************************************************************************************
  */
 
-package nl.vorhauer.oia.tomcat;
+package nl.vorhauer.tomcat;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
