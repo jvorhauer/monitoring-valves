@@ -1,5 +1,7 @@
 # metrics-valve
 
+[![Build Status](https://travis-ci.org/jvorhauer/metrics-valve.svg?branch=master)](https://travis-ci.org/jvorhauer/metrics-valve)
+
 Tomcat 7 Valve to gather timing metrics on requests and report the gathered timings to the console or graphite. Or both.
 
 *Each* request that arrives at the Tomcat instance with this Valve added to server.xml, is timed.
@@ -37,7 +39,6 @@ Copy these JARs to the **lib** folder of a Tomcat instance:
 - slf4j-api-1.7.7.jar
 - metrics-influxdb-0.4.0.jar
 - metrics-jvm-3.1.0.jar
-- config-1.2.1.jar
 - metrics-valve.jar
 
 ### Notes on dependencies:

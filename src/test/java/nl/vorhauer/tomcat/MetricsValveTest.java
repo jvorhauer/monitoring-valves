@@ -78,6 +78,7 @@ public class MetricsValveTest {
 		metricsValve.setGraphitePort(null);
 		assertThat(metricsValve.isGraphiteEnabled(), is(false));
 
+		assertThat(metricsValve.getGraphitePrefix(), is(""));
 		metricsValve.setGraphitePort(port);
 		metricsValve.setGraphitePrefix(null);
 		assertThat(metricsValve.isGraphiteEnabled(), is(false));

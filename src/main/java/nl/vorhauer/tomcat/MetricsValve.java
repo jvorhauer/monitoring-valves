@@ -32,7 +32,6 @@ import metrics_influxdb.Influxdb;
 import metrics_influxdb.InfluxdbReporter;
 import org.apache.catalina.AccessLog;
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
@@ -228,6 +227,9 @@ public class MetricsValve extends ValveBase implements AccessLog {
 			logger.info("stopInternal: console reporter stopped.");
 		}
 	}
+
+	@Override
+	public String getInfo() { return info; }
 
 
 	private Boolean notBlank(final String s) {
