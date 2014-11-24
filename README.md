@@ -43,7 +43,10 @@ Copy these JARs to the **lib** folder of a Tomcat instance:
 
 ### Notes on dependencies:
 
-metrics-valve uses [Typseafe Config](https://github.com/typesafehub/config "Typesafe Config") as this is the most versatile configuration library available.
+metrics-influxdb and metrics-graphite should be replaced with specific versions for this project. This will
+reduce the number of dependencies. Issue #2 @ Github.
+
+metrics-jvm contains a number of M(x)Bean Gauge sets. These sets are rather extensive. This could be replaced
 
 ## configuration
 
