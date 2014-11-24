@@ -7,7 +7,15 @@ Tomcat 7 Valve to gather timing metrics on requests and report the gathered timi
 ## server.xml
 
 ```XML
-<Valve className="nl.vorhauer.tomcat.MetricsValve" />
+<Valve className="nl.vorhauer.tomcat.MetricsValve"
+       graphiteHost="localhost"
+       graphitePrefix="prefix"
+       consoleEnabled="true"
+       influxHost="localhost"
+       influxDbName="dbname"
+       influxUser="username"
+       influxPasswd="password"
+       influxPrefix="prefix" />
 ```
 
 Add this line near the AccessLogValve resource, at least in the **/Server/Service/Engine/Host** section:

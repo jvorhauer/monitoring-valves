@@ -32,6 +32,7 @@ import metrics_influxdb.Influxdb;
 import metrics_influxdb.InfluxdbReporter;
 import org.apache.catalina.AccessLog;
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
@@ -41,8 +42,6 @@ import org.apache.juli.logging.LogFactory;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,62 +50,128 @@ import java.util.concurrent.TimeUnit;
  */
 public class MetricsValve extends ValveBase implements AccessLog {
 
-	private static final Log logger = LogFactory.getLog(MetricsValve.class);
-	private static final MetricRegistry registry = new MetricRegistry();
-	private static final Map<String, Timer> uris = new ConcurrentHashMap<>();
+	protected static final String info  = "nl.vorhauer.tomcat.MetricsValve/1.1";
+	private   static final Log    logger= LogFactory.getLog(MetricsValve.class);
 
-	private final Setup setup = new Setup();
+	private final MetricRegistry registry = new MetricRegistry();
 
 	private boolean requestAttributesEnabled = false;
-	private ConsoleReporter console;
-	private InfluxdbReporter influx;
-	private GraphiteReporter graphite;
+	private boolean jvmMetricsEnabled        = true;
+
+	private String  graphiteHost   = null;
+	private Integer graphitePort   = 2003;
+	private String  graphitePrefix = "";
+	private Boolean consoleEnabled = Boolean.FALSE;
+	private String  influxHost     = null;
+	private Integer influxPort     = 8086;
+	private String  influxDbName   = null;
+	private String  influxUser     = null;
+	private String  influxPasswd   = null;
+	private String  influxPrefix   = "";
+
+	private ConsoleReporter  console = null;
+	private InfluxdbReporter influx  = null;
+	private GraphiteReporter graphite= null;
+
 
 	public MetricsValve() throws Exception {
-		super(true);
-
-		registry.registerAll(new MemoryUsageGaugeSet());
-		registry.registerAll(new GarbageCollectorMetricSet());
-		registry.registerAll(new ThreadStatesGaugeSet());
-
-		setupReporters();
-
-		logger.info("enabled reporters started");
+		super(true);    // supports async: running in Tomcat 7 or higher
 	}
-		private synchronized void setupReporters() throws Exception {
-			if (setup.isConsoleEnabled) {
-				console = ConsoleReporter.forRegistry(registry).
-																	convertDurationsTo(TimeUnit.MILLISECONDS).
-																	convertRatesTo(TimeUnit.MILLISECONDS).
-																	filter(MetricFilter.ALL).
-				                          build();
-				console.start(1, TimeUnit.MINUTES);
-				logger.info("setup: console reporter started.");
-			}
-			if (setup.isGraphiteEnabled) {
-				final InetSocketAddress isa = new InetSocketAddress(setup.graphiteHost, setup.graphitePort);
-				graphite = GraphiteReporter.forRegistry(registry).
-				                            prefixedWith(setup.graphitePrefix).
-				                            convertDurationsTo(TimeUnit.MILLISECONDS).
-				                            convertRatesTo(TimeUnit.MILLISECONDS).
-				                            filter(MetricFilter.ALL).
-				                            build(new Graphite(isa));
-				graphite.start(1, TimeUnit.MINUTES);
-				logger.info("setup: graphite reporter started.");
-			}
-			if (setup.isInfluxdbEnabled) {
-				final Influxdb db = new Influxdb(setup.influxHost, setup.influxPort,
-				                                 setup.influxDb, setup.influxUser, setup.influxPassword);
+
+	@Override
+	protected synchronized void startInternal() throws LifecycleException {
+
+		super.startInternal();
+
+		if (jvmMetricsEnabled) {
+			registry.registerAll(new MemoryUsageGaugeSet());
+			registry.registerAll(new GarbageCollectorMetricSet());
+			registry.registerAll(new ThreadStatesGaugeSet());
+		}
+
+		if (isConsoleEnabled()) {
+			console = ConsoleReporter.forRegistry(registry).
+																convertDurationsTo(TimeUnit.MILLISECONDS).
+																convertRatesTo(TimeUnit.MILLISECONDS).
+																filter(MetricFilter.ALL).
+			                          build();
+			console.start(1, TimeUnit.MINUTES);
+			logger.info("setup: console reporter started.");
+		}
+		if (isGraphiteEnabled()) {
+			final InetSocketAddress isa = new InetSocketAddress(graphiteHost, graphitePort);
+			graphite = GraphiteReporter.forRegistry(registry).
+			                            prefixedWith(graphitePrefix).
+			                            convertDurationsTo(TimeUnit.MILLISECONDS).
+			                            convertRatesTo(TimeUnit.MILLISECONDS).
+			                            filter(MetricFilter.ALL).
+			                            build(new Graphite(isa));
+			graphite.start(1, TimeUnit.MINUTES);
+			logger.info("setup: graphite reporter started.");
+		}
+		if (isInfluxEnabled()) {
+			try {
+				final Influxdb db = new Influxdb(influxHost, influxPort,
+				                                 influxDbName, influxUser, influxPasswd);
 				influx = InfluxdbReporter.forRegistry(registry).
-				                          prefixedWith(setup.influxPrefix).
+				                          prefixedWith(influxPrefix).
 				                          convertDurationsTo(TimeUnit.MILLISECONDS).
 				                          convertRatesTo(TimeUnit.MILLISECONDS).
 				                          filter(MetricFilter.ALL).
 				                          build(db);
 				influx.start(1, TimeUnit.MINUTES);
 				logger.info("setup: influx reporter started.");
+			} catch (Exception e) {
+				logger.error("", e);
 			}
 		}
+	}
+
+	public void setJvmMetricsEnabled(final Boolean b) { jvmMetricsEnabled = b; }
+	public Boolean isJvmMetricsEnabled() { return jvmMetricsEnabled; }
+
+	public void setConsoleEnabled(final Boolean b) { consoleEnabled = b; }
+	public Boolean isConsoleEnabled() { return consoleEnabled; }
+
+	public void setGraphiteHost(final String s) { graphiteHost = s; }
+	public String getGraphiteHost() { return graphiteHost; }
+
+	public void setGraphitePort(final Integer i) { graphitePort = i; }
+	public Integer getGraphitePort() { return graphitePort; }
+
+	public void setGraphitePrefix(final String s) { graphitePrefix = s; }
+	public String getGraphitePrefix() { return graphitePrefix; }
+
+	public Boolean isGraphiteEnabled() {
+		return notBlank(graphiteHost) &&
+		       graphitePort != null && graphitePort > 1024 &&
+		       graphitePrefix != null;
+	}
+
+	public void setInfluxHost(final String s) { influxHost = s; }
+	public String getInfluxHost() { return influxHost; }
+
+	public void setInfluxPort(final Integer i) { influxPort = i; }
+	public Integer getInfluxPort() { return influxPort; }
+
+	public void setInfluxDbName(final String s) { influxDbName = s; }
+	public String getInfluxDbName() { return influxDbName; }
+
+	public void setInfluxUser(final String s) { influxUser = s; }
+	public String getInfluxUser() { return influxUser; }
+
+	public void setInfluxPasswd(final String s) { influxPasswd = s; }
+	public String getInfluxPasswd() { return influxPasswd; }
+
+	public void setInfluxPrefix(final String s) { influxPrefix = s; }
+	public String getInfluxPrefix() { return influxPrefix; }
+
+	public Boolean isInfluxEnabled() {
+		return notBlank(influxHost) &&
+		       influxPort != null && influxPort > 1024 &&
+		       notBlank(influxDbName) && notBlank(influxUser) && notBlank(influxPasswd) &&
+		       influxPrefix != null;
+	}
 
 	@Override
 	public void invoke(final Request request, final Response response) throws IOException, ServletException {
@@ -123,11 +188,10 @@ public class MetricsValve extends ValveBase implements AccessLog {
 		ctx.stop();
 	}
 		private Timer timerForUri(final String uri) {
-			if (!uris.containsKey(uri)) {
-				final Timer timer = registry.timer(uri);
-				uris.put(uri, timer);
+			if (!registry.getTimers().containsKey(uri)) {
+				registry.timer(uri);
 			}
-			return uris.get(uri);
+			return registry.getTimers().get(uri);
 		}
 		private String rewriteUri(final String in) {
 			final String dotted = in.replaceAll("/", "\\.");
@@ -135,30 +199,38 @@ public class MetricsValve extends ValveBase implements AccessLog {
 		}
 
 	@Override
-	public void setRequestAttributesEnabled(final boolean b) {
-		requestAttributesEnabled = b;
-	}
+	public void setRequestAttributesEnabled(final boolean b) { requestAttributesEnabled = b; }
 
 	@Override
-	public boolean getRequestAttributesEnabled() {
-		return requestAttributesEnabled;
-	}
+	public boolean getRequestAttributesEnabled() { return requestAttributesEnabled; }
+
 
 	@Override
 	protected synchronized void stopInternal() throws LifecycleException {
+
 		super.stopInternal();
-		if (setup.isInfluxdbEnabled && influx != null) {
+
+		if (isInfluxEnabled() && influx != null) {
 			influx.report();
 			influx.stop();
+			logger.info("stopInternal: influx reporter stopped.");
 		}
-		if (setup.isGraphiteEnabled && graphite != null) {
+
+		if (isGraphiteEnabled() && graphite != null) {
 			graphite.report();
 			graphite.stop();
+			logger.info("stopInternal: graphite reporter stopped.");
 		}
-		if (setup.isConsoleEnabled && console != null) {
+
+		if (isConsoleEnabled() && console != null) {
 			console.report();
 			console.stop();
+			logger.info("stopInternal: console reporter stopped.");
 		}
-		logger.info("Stopped.");
+	}
+
+
+	private Boolean notBlank(final String s) {
+		return s != null && !s.trim().isEmpty();
 	}
 }
