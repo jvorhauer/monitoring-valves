@@ -48,18 +48,9 @@ reduce the number of dependencies. Issue #2 @ Github.
 
 metrics-jvm contains a number of M(x)Bean Gauge sets. These sets are rather extensive. This could be replaced
 
-## configuration
-
-The configuration of the metrics reporters is in **src/main/resources/reference.conf**.
-
-If you want to override the default/reference configuration, copy the settings to a new file, say **my.conf** and
-add **-Dconfig.file=path/to/my.conf** to your setenv.sh.
-
-Another option is to put **my.conf** in a folder which is part of the Tomcat classpath.
-
 ## Important!
 
 This Valve has only been tested with Tomcat 7!
-The Java version used to compile the sources is JDK 1.8.0_25, but the Maven compiler plugin was
+The Java Development Kit (JDK) version used to compile the sources is 1.8.0_25, but the Maven compiler plugin was
 instructed to use 1.7 source and target versions.
 
