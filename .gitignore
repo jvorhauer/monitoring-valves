@@ -10,3 +10,7 @@ release.properties
 ### IntelliJ IDEA
 .idea/
 *.iml
+
+### Sublime Text:
+*.sublime-project
+*.sublime-workspace
