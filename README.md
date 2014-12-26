@@ -36,9 +36,9 @@ Copy these JARs to the **lib** folder of a Tomcat instance:
 
 - metrics-core-3.1.0.jar
 - metrics-graphite-3.1.0.jar
-- slf4j-api-1.7.7.jar
-- metrics-influxdb-0.4.0.jar
 - metrics-jvm-3.1.0.jar
+- metrics-influxdb-0.4.0.jar
+- slf4j-api-1.7.7.jar
 - metrics-valve.jar
 
 ### Notes on dependencies:
