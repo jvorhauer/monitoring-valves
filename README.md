@@ -35,10 +35,14 @@ The JSON formatter produces a format that satisfies my needs, but might need som
 
 ```XML
 <Valve className="nl.vorhauer.tomcat.RedisAccessValve"
-       redisHost="localhost"
-       redisPort=9999 />
+       host="localhost"
+       port="6379"
+       key="logstash"
+       source="access"
+       custom="component:server,environment:prod" />
 ```
 
+The *custom* attribute contains zero or more fields that will be included in the resulting JSON.
 
 ## dependencies
 
@@ -51,11 +55,9 @@ Copy these JARs to the **lib** folder of a Tomcat instance:
 - slf4j-api-1.7.7.jar
 - metrics-valve.jar
 - jedis-2.5.2.jar
-- commons-pool2.jar
+- commons-pool2-2.0.jar
 
 ### Notes on dependencies:
-
-metrics-influxdb and metrics-graphite should be replaced with implementations in this project, thus reducing the number of dependencies. Issue #2 @ Github.
 
 metrics-jvm contains a number of M(x)Bean Gauge sets. These sets are rather extensive. This will be replaced with an implementation that will combine all relevant settings. A facilitiy to monitor relevant filesystems will be added as well.
 

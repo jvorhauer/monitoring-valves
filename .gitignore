@@ -14,3 +14,9 @@ release.properties
 ### Sublime Text:
 *.sublime-project
 *.sublime-workspace
+
+### Gradle:
+.gradle/
+build/
+gradle/
+.gradletasknamecache

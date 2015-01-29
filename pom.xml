@@ -3,128 +3,140 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>nl.vorhauer.oia.tomcat</groupId>
-	<artifactId>metrics-valve</artifactId>
-	<version>1.2-SNAPSHOT</version>
+  <groupId>nl.vorhauer.oia.tomcat</groupId>
+  <artifactId>metrics-valve</artifactId>
+  <version>1.2-SNAPSHOT</version>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments>A business-friendly OSS license</comments>
-		</license>
-	</licenses>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
 
-	<developers>
-		<developer>
-			<email>jvorhauer@me.com</email>
-			<id>jvorhauer</id>
-			<name>Jurjen Vorhauer</name>
-			<timezone>UTC+1:00</timezone>
-		</developer>
-	</developers>
+  <developers>
+    <developer>
+      <email>jvorhauer@me.com</email>
+      <id>jvorhauer</id>
+      <name>Jurjen Vorhauer</name>
+      <timezone>UTC+1:00</timezone>
+    </developer>
+  </developers>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
-		<metrics.version>3.1.0</metrics.version>
-		<tomcat.version>7.0.56</tomcat.version>
-	</properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.7</java.version>
+    <metrics.version>3.1.0</metrics.version>
+    <tomcat.version>7.0.56</tomcat.version>
+  </properties>
 
-	<scm>
-		<connection>scm:git:git@github.com:jvorhauer/metrics-valve.git</connection>
-		<developerConnection>scm:git:git@github.com:jvorhauer/metrics-valve.git</developerConnection>
-		<url>https://github.com/jvorhauer/metrics-valve</url>
-	  <tag>HEAD</tag>
+  <scm>
+    <connection>scm:git:git@github.com:jvorhauer/metrics-valve.git</connection>
+    <developerConnection>scm:git:git@github.com:jvorhauer/metrics-valve.git</developerConnection>
+    <url>https://github.com/jvorhauer/metrics-valve</url>
+    <tag>HEAD</tag>
   </scm>
 
-	<distributionManagement>
-		<repository>
-			<id>mine</id>
-			<url>file:///Users/juvor/.m2/repository</url>
-		</repository>
-	</distributionManagement>
+  <distributionManagement>
+    <repository>
+      <id>mine</id>
+      <url>file:///Users/juvor/.m2/repository</url>
+    </repository>
+  </distributionManagement>
 
-	<dependencies>
+  <dependencies>
 
-		<!-- Provided Tomcat libraries: -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-catalina</artifactId>
-			<version>${tomcat.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-coyote</artifactId>
-			<version>${tomcat.version}</version>
-			<scope>provided</scope>
-		</dependency>
+    <!-- Provided Tomcat libraries: -->
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-catalina</artifactId>
+      <version>${tomcat.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-coyote</artifactId>
+      <version>${tomcat.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-		<!-- Coda Hale's metrics: -->
-		<dependency>
-			<groupId>io.dropwizard.metrics</groupId>
-			<artifactId>metrics-core</artifactId>
-			<version>${metrics.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.dropwizard.metrics</groupId>
-			<artifactId>metrics-graphite</artifactId>
-			<version>${metrics.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.dropwizard.metrics</groupId>
-			<artifactId>metrics-jvm</artifactId>
-			<version>${metrics.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.alchim31</groupId>
-			<artifactId>metrics-influxdb</artifactId>
-			<version>0.4.0</version>
-			<scope>provided</scope>
-		</dependency>
+    <!-- Coda Hale's metrics: -->
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+      <version>${metrics.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-graphite</artifactId>
+      <version>${metrics.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-jvm</artifactId>
+      <version>${metrics.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.alchim31</groupId>
+      <artifactId>metrics-influxdb</artifactId>
+      <version>0.4.0</version>
+      <scope>provided</scope>
+    </dependency>
 
-		<!-- Tests: -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.hamcrest</groupId>
-					<artifactId>hamcrest-core</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
-			<version>1.3</version>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+      <groupId>com.ning</groupId>
+      <artifactId>async-http-client</artifactId>
+      <version>1.9.6</version>
+    </dependency>
 
-	</dependencies>
+    <!-- Tests: -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.1.1</version>
+      <scope>test</scope>
+    </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<compilerArgument>-Xlint:unchecked</compilerArgument>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
