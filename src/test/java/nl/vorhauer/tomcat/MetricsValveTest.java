@@ -19,10 +19,8 @@
 
 package nl.vorhauer.tomcat;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
 import org.apache.catalina.LifecycleException;
+import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,62 +47,61 @@ public class MetricsValveTest {
 
 	@Test
 	public void checkGenericProperties() {
-		assertThat(metricsValve, notNullValue());
-		assertThat(metricsValve.getRequestAttributesEnabled(), notNullValue());
+		Assertions.assertThat(metricsValve).isNotNull();
+		Assertions.assertThat(metricsValve.getRequestAttributesEnabled()).isNotNull();
 
-		assertThat(metricsValve.isJvmMetricsEnabled(), is(true));
+		Assertions.assertThat(metricsValve.isJvmMetricsEnabled()).isTrue();
 		metricsValve.setJvmMetricsEnabled(false);
-		assertThat(metricsValve.isJvmMetricsEnabled(), is(false));
+		Assertions.assertThat(metricsValve.isJvmMetricsEnabled()).isFalse();
 	}
 
 	@Test
 	public void checkConsoleProperties() {
-		assertThat(metricsValve, notNullValue());
-
-		assertThat(metricsValve.isConsoleEnabled(), is(false));
+		Assertions.assertThat(metricsValve).isNotNull();
+		Assertions.assertThat(metricsValve.isConsoleEnabled()).isFalse();
 		metricsValve.setConsoleEnabled(Boolean.TRUE);
-		assertThat(metricsValve.isConsoleEnabled(), is(true));
+		Assertions.assertThat(metricsValve.isConsoleEnabled()).isTrue();
 	}
 
 	@Test
 	public void checkGraphiteProperties() {
-		assertThat(metricsValve.getGraphiteHost(), nullValue());
-		assertThat(metricsValve.isGraphiteEnabled(), is(false));
-
+    Assertions.assertThat(metricsValve).isNotNull();
+		Assertions.assertThat(metricsValve.getGraphiteHost()).isNull();
+    Assertions.assertThat(metricsValve.isGraphiteEnabled()).isFalse();
 		metricsValve.setGraphiteHost("localhost");
-		assertThat(metricsValve.isGraphiteEnabled(), is(true));
+    Assertions.assertThat(metricsValve.isGraphiteEnabled()).isTrue();
 
 		final Integer port = metricsValve.getGraphitePort();
 		metricsValve.setGraphitePort(null);
-		assertThat(metricsValve.isGraphiteEnabled(), is(false));
+    Assertions.assertThat(metricsValve.isGraphiteEnabled()).isFalse();
 
-		assertThat(metricsValve.getGraphitePrefix(), is(""));
+    Assertions.assertThat(metricsValve.getGraphitePrefix()).isEqualTo("");
 		metricsValve.setGraphitePort(port);
 		metricsValve.setGraphitePrefix(null);
-		assertThat(metricsValve.isGraphiteEnabled(), is(false));
+    Assertions.assertThat(metricsValve.isGraphiteEnabled()).isFalse();
 	}
 
 	@Test
 	public void checkInfluxProperties() {
-		assertThat(metricsValve, notNullValue());
+    Assertions.assertThat(metricsValve).isNotNull();
 
-		assertThat(metricsValve.getInfluxHost(), nullValue());
-		assertThat(metricsValve.getInfluxPort(), is(8086));
-		assertThat(metricsValve.getInfluxDbName(), nullValue());
-		assertThat(metricsValve.getInfluxUser(), nullValue());
-		assertThat(metricsValve.getInfluxPasswd(), nullValue());
-		assertThat(metricsValve.getInfluxPrefix(), is(""));
+    Assertions.assertThat(metricsValve.getInfluxHost()).isNull();
+    Assertions.assertThat(metricsValve.getInfluxPort()).isEqualTo(8086);
+    Assertions.assertThat(metricsValve.getInfluxDbName()).isNull();
+    Assertions.assertThat(metricsValve.getInfluxUser()).isNull();
+    Assertions.assertThat(metricsValve.getInfluxPasswd()).isNull();
+    Assertions.assertThat(metricsValve.getInfluxPrefix()).isEqualTo("");
 
-		assertThat(metricsValve.isInfluxEnabled(), is(false));
+    Assertions.assertThat(metricsValve.isInfluxEnabled()).isFalse();
 
 		metricsValve.setInfluxHost("localhost");
 		metricsValve.setInfluxDbName("dbname");
 		metricsValve.setInfluxUser("username");
 		metricsValve.setInfluxPasswd("password");
 		metricsValve.setInfluxPrefix("prefix");
-		assertThat(metricsValve.isInfluxEnabled(), is(true));
+    Assertions.assertThat(metricsValve.isInfluxEnabled()).isTrue();
 
 		metricsValve.setInfluxPort(null);
-		assertThat(metricsValve.isInfluxEnabled(), is(false));
+    Assertions.assertThat(metricsValve.isInfluxEnabled()).isFalse();
 	}
 }
