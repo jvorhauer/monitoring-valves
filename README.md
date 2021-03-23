@@ -1,8 +1,6 @@
 # monitoring-valves
 
-[![Build Status](https://travis-ci.org/jvorhauer/monitoring-valves.svg?branch=master)](https://travis-ci.org/jvorhauer/monitoring-valves)
-
-This project consists of two Valves for Tomcat 7: one that gathers metrics on the Tomcat JVM and the requests that were handled; the other to log requests to logstash using Redis as queue.
+[![GitHub Action](https://github.com/jvorhauer/monitoring-valves/actions/workflows/maven.yml/badge.svg)](https://github.com/jvorhauer/monitoring-valves/actions/workflows/maven.yml)
 
 ## MetricsValve
 
@@ -24,38 +22,20 @@ A Valve to gather timing metrics on requests and report the gathered timings to 
        influxPrefix="prefix" />
 ```
 
-Add this line to the **/Server/Service/Engine/Host** section:
+Add this line to the **/Server/Service/Engine/Host** section.
+The absence or presence of certain attributes determines the backend to be used, so a `graphiteHost` with a (valid!) hostname means that 
+metrics are send to that Graphite backend. For InfluxDB all influx* attributes are required.
 
-### RedisAccessValve (planned)
-
-A Valve to log all access to Redis, probably used as queue for logstash. Jedis is used as Redis client library.
-The JSON formatter produces a format that satisfies my needs, but might need some attention for different logstash configurations.
-
-### server.xml
-
-```XML
-<Valve className="nl.vorhauer.tomcat.RedisAccessValve"
-       host="localhost"
-       port="6379"
-       key="logstash"
-       source="access"
-       custom="component:server,environment:prod" />
-```
-
-The *custom* attribute contains zero or more fields that will be included in the resulting JSON.
-
-## dependencies
+## Dependencies
 
 Copy these JARs to the **lib** folder of a Tomcat instance:
 
-- metrics-core-3.1.0.jar
-- metrics-graphite-3.1.0.jar
-- metrics-jvm-3.1.0.jar
-- metrics-influxdb-0.4.0.jar
+- metrics-core-4.1.18.jar
+- metrics-graphite-4.1.18.jar
+- metrics-jvm-4.1.18.jar
+- metrics-influxdb-0.7.0.jar
 - slf4j-api-1.7.7.jar
 - metrics-valve.jar
-- jedis-2.5.2.jar
-- commons-pool2-2.0.jar
 
 ### Notes on dependencies:
 
@@ -64,4 +44,10 @@ metrics-jvm contains a number of M(x)Bean Gauge sets. These sets are rather exte
 ## Important!
 
 This Valve has only been tested with Tomcat 7!
-The Java Development Kit (JDK) version used to compile the sources is 1.8.0_25, but the Maven compiler plugin was instructed to use 1.7 source and target versions.
+The Java Development Kit (JDK) version used to compile the sources is 11, and the Maven compiler plugin was instructed to use 11 source and target versions.
+
+## Build
+
+Use the included Maven wrapper to build this project. For example `./mvnw clean verify`.
+
+And use `./mvnw package` to create the required **metrics-valve.jar**.
