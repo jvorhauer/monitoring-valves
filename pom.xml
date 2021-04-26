@@ -30,7 +30,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>11</java.version>
-    <metrics.version>4.1.18</metrics.version>
+    <metrics.version>4.1.20</metrics.version>
     <tomcat.version>10.0.4</tomcat.version>
   </properties>
 
