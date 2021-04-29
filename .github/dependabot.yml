@@ -1,0 +1,49 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: io.dropwizard.metrics:metrics-jvm
+    versions:
+    - 4.1.17
+    - 4.1.18
+    - 4.1.19
+  - dependency-name: io.dropwizard.metrics:metrics-graphite
+    versions:
+    - 4.1.17
+    - 4.1.18
+    - 4.1.19
+  - dependency-name: io.dropwizard.metrics:metrics-core
+    versions:
+    - 4.1.17
+    - 4.1.18
+    - 4.1.19
+  - dependency-name: org.apache.tomcat:tomcat-coyote
+    versions:
+    - 10.0.0
+    - 10.0.2
+    - 10.0.4
+  - dependency-name: org.apache.tomcat:tomcat-catalina
+    versions:
+    - 10.0.0
+    - 10.0.2
+    - 10.0.4
+  - dependency-name: junit:junit
+    versions:
+    - 4.13.1
+  - dependency-name: com.ning:async-http-client
+    versions:
+    - 1.9.40
+  - dependency-name: ch.qos.logback:logback-classic
+    versions:
+    - 1.2.3
+  - dependency-name: org.apache.maven.plugins:maven-compiler-plugin
+    versions:
+    - 3.8.1
+  - dependency-name: net.alchim31:metrics-influxdb
+    versions:
+    - 0.7.0
